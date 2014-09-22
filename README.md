@@ -6,6 +6,24 @@ A really simple BASIC interpreter in Python based on uBASIC.
 DEMO
 ====
 
+BASIC code
+
+```
+10 gosub 100
+20 for i = 1 to 9
+25 for j = 1 to i
+30 print j;"*";i;"=";i*j,
+35 next j
+37 print
+40 next i
+50 print "Have a lot of fun!"
+60 end
+100 print "Multiplication Table"
+110 return
+```
+
+and the output
+
 ```
 $ python pybasic.py
 Multiplication Table
@@ -25,5 +43,5 @@ Have a lot of fun!
 
 --
 
-MIT license - Copyright (C) 2014 :sparkles:
+MIT license for pybasic.py - Copyright (C) 2014 :sparkles:
 
