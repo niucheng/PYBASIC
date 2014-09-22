@@ -358,27 +358,42 @@ goto_statement(void)
 static void
 print_statement(void)
 {
+  int state = 0;  // 0 - Default
+                  // 1 - TOKENIZER_STRING
+                  // 2 - TOKENIZER_COMMA
+                  // 3 - TOKENIZER_SEMICOLON
+                  // 4 - TOKENIZER_VARIABLE or TOKENIZER_NUMBER
+                  // 5 - None arguments
   accept(TOKENIZER_PRINT);
   do {
     DEBUG_PRINTF("Print loop\n");
+    state = 0;
     if(tokenizer_token() == TOKENIZER_STRING) {
       tokenizer_string(string, sizeof(string));
       printf("%s", string);
+      state = 1;
       tokenizer_next();
     } else if(tokenizer_token() == TOKENIZER_COMMA) {
       printf(" ");
+      state = 2;
       tokenizer_next();
     } else if(tokenizer_token() == TOKENIZER_SEMICOLON) {
+      state = 3;
       tokenizer_next();
     } else if(tokenizer_token() == TOKENIZER_VARIABLE ||
           tokenizer_token() == TOKENIZER_NUMBER) {
       printf("%d", expr());
+      state = 4;
     } else {
+      state = 5;
       break;
     }
   } while(tokenizer_token() != TOKENIZER_CR &&
       tokenizer_token() != TOKENIZER_ENDOFINPUT);
-  printf("\n");
+  if (state != 2 && state != 3)
+  {
+    printf("\n");
+  }
   DEBUG_PRINTF("End of print\n");
   tokenizer_next();
 }
